@@ -1,0 +1,79 @@
+CREATE TABLE p_s_data(
+  patient_id NUMBER,
+  patient_name VARCHAR2(20),
+  patient_age NUMBER,
+  patient_gender VARCHAR2(20),
+  icu_type VARCHAR2(20),
+  bmi NUMBER,
+  apache_4a_hospital_death_prob NUMBER
+);
+
+INSERT INTO p_s_data VALUES(01, 'khalid', 20, 'm', 'sicu', 37, 0.3);
+INSERT INTO p_s_data VALUES(02, 'anoop', 21, 'm', 'micu', 33, 0.3);
+INSERT INTO p_s_data VALUES(03, 'mubarak', 21, 'm', 'sicu', 37, 0.5);
+INSERT INTO p_s_data VALUES(04, 'varshini', 21, 'f', 'sicu', 35, 0.5);
+INSERT INTO p_s_data VALUES(05, 'ajay', 21, 'm', 'sicu', 29, 0.5);
+INSERT INTO p_s_data VALUES(06, 'rishab', 25, 'm', 'micu', 37, 0.9);
+INSERT INTO p_s_data VALUES(07, 'chandra', 34, 'm', 'micu', 30, 0.7);
+INSERT INTO p_s_data VALUES(08, 'muthuraj', 35, 'm', 'micu', 30, 0.8);
+INSERT INTO p_s_data VALUES(09, 'kishore', 28, 'm', 'sicu', 30, 0.6);
+INSERT INTO p_s_data VALUES(10, 'mujtaba', 28, 'm', 'micu', 39, 0.4);
+
+SELECT
+  patient_id,
+  apache_4a_hospital_death_prob AS hospital_death_prob
+FROM p_s_data
+WHERE icu_type = 'sicu' AND bmi >= 30 AND patient_gender = 'm'
+ORDER BY hospital_death_prob DESC;
+
+SELECT
+  patient_id,
+  apache_4a_hospital_death_prob AS hospital_death_prob
+FROM p_s_data
+WHERE icu_type = 'sicu' AND bmi >= 30 AND patient_gender = 'f'
+ORDER BY hospital_death_prob;
+
+SELECT
+  patient_id,
+  apache_4a_hospital_death_prob AS hospital_death_prob
+FROM p_s_data
+WHERE icu_type = 'micu' AND bmi >= 35
+ORDER BY hospital_death_prob;
+
+WITH p_s_data AS (
+  SELECT 1 AS patient_id, 'SICU' AS icu_type, 35 AS bmi, 0.8 AS apache_4a_hospital_death_prob FROM DUAL
+  UNION ALL
+  SELECT 2, 'SICU', 32, 0.7 FROM DUAL
+  UNION ALL
+  SELECT 3, 'MICU', 28, 0.5 FROM DUAL
+  UNION ALL
+  SELECT 4, 'SICU', 38, 0.9 FROM DUAL
+  UNION ALL
+  SELECT 5, 'SICU', 31, 0.6 FROM DUAL
+)
+SELECT
+  patient_id,
+  apache_4a_hospital_death_prob AS hospital_death_prob
+FROM p_s_data
+WHERE icu_type = 'SICU' AND bmi > 32
+ORDER BY hospital_death_prob DESC;
+
+WITH p_s_data AS (
+  SELECT 1 AS patient_id, 'SICU' AS icu_type, 35 AS bmi, 0.8 AS apache_4a_hospital_death_prob FROM DUAL
+  UNION ALL
+  SELECT 2, 'SICU', 32, 0.7 FROM DUAL
+  UNION ALL
+  SELECT 3, 'MICU', 28, 0.5 FROM DUAL
+  UNION ALL
+  SELECT 4, 'SICU', 38, 0.9 FROM DUAL
+  UNION ALL
+  SELECT 5, 'SICU', 31, 0.6 FROM DUAL
+)
+SELECT
+  patient_id,
+  apache_4a_hospital_death_prob AS hospital_death_prob
+FROM p_s_data
+WHERE icu_type = 'SICU' AND bmi > 32
+ORDER BY hospital_death_prob;
+
+COMMIT;
